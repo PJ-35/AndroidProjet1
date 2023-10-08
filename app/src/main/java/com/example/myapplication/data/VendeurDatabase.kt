@@ -13,11 +13,7 @@ import kotlinx.coroutines.launch
 import java.math.BigDecimal
 import kotlin.random.Random
 
-enum class categorie {
-    EN_STOCK,
-    EN_RUPTURE_DE_STOCK,
-    EN_COMMANDE
-}
+
 @Database(entities = [Vendeur::class], version = 0)
 abstract class VendeurDatabase:RoomDatabase() {
     // Méthode abstraite qui retourne un objet de type UserDao
