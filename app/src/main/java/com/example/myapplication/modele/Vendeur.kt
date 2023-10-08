@@ -3,7 +3,7 @@ package com.example.myapplication.modele
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.math.BigDecimal
+import com.example.myapplication.data.categorie
 
 @Entity(tableName = "vendeurs")
 data class Vendeur(
@@ -17,10 +17,10 @@ data class Vendeur(
     val description: String,
 
     @ColumnInfo(name="prix")
-    val prix: BigDecimal,
+    val prix: Double,
 
     @ColumnInfo("categorie")
-    val categorie: String,
+    val categorie: categorie,
 
     @ColumnInfo("quantite")
     val quantite: Int,

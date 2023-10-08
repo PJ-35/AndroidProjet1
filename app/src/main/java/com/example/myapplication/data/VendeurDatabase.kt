@@ -10,7 +10,6 @@ import com.example.myapplication.modele.Vendeur
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.math.BigDecimal
 import kotlin.random.Random
 
 
@@ -54,7 +53,7 @@ abstract class VendeurDatabase:RoomDatabase() {
                                     (1..20).forEach {
                                         database.vendeurDao().insertVendeur(
                                             Vendeur(0, "Vendeur $it", "description $it",
-                                                BigDecimal(45.45),categorie.values()[Random.nextInt(categorie.values().size)].toString(),1)
+                                                45.45,categorie.values()[Random.nextInt(categorie.values().size)],1)
                                         )
                                     }
                                 }
