@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 import kotlin.random.Random
 
 
-@Database(entities = [Vendeur::class], version = 0)
+@Database(entities = [Vendeur::class], version = 1)
 abstract class VendeurDatabase:RoomDatabase() {
     // Méthode abstraite qui retourne un objet de type UserDao
     abstract fun vendeurDao(): VendeurDao
