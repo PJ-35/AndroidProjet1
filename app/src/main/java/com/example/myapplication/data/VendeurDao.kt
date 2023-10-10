@@ -42,8 +42,7 @@ interface VendeurDao {
     fun getVendeurById(id: Int): LiveData<Vendeur>
 
     /**
-     * Version de getAllUsers retournant un observable
-     * val users = dao.getVendeurs().observe(this, { users -> ... })
+     * Version de getAllUsers retournant un live data
      */
     @Query("SELECT * FROM vendeurs")
     fun getAllVendeurs(): LiveData<List<Vendeur>>
