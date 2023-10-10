@@ -17,8 +17,7 @@ class VendeurAdapter(private val lstVendeur: List<Vendeur>):
     // mis à disposition de toute activité instanciant l'adapter : à charge pour cette activité d'implémenter les méthodes de l'interface
     interface OnItemClickListenerInterface {
         fun onItemClick(itemView: View?, position: Int)
-        fun onClickEdit(itemView: View, position: Int)
-        fun onClickDelete(position: Int)
+
     }
 
     // Objet qui instancie l'interface OnItemClickListener
