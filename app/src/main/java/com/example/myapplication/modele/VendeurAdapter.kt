@@ -39,6 +39,20 @@ class VendeurAdapter(private val lstVendeur: List<Vendeur>,private val administr
         // bloc de construction exécuté immédiatement après le constructeur primaire
         // nécessaire car on ne peut pas exécuter de code dans le constructeur primaire
         init {
+
+            // Ajoute un écouteur d'événement du clic simple sur itemView (la ligne entière)
+            itemView.setOnClickListener {
+                // Récupère la position de l'élément cliqué
+                val position = adapterPosition
+                // Vérifie que la position est valide
+                // (parfois, le clic est détecté alors que la position n'est pas encore déterminée)
+                if (position != RecyclerView.NO_POSITION) {
+                    // Appelle la méthode onItemClick de l'objet qui implémente l'interface OnItemClickListener
+                    listener.onItemClick(itemView, position);
+
+                }
+            }
+
             if(administrateur){
                 // Ajoute un écouteur d'événement du clic long sur itemView
                 // (pour afficher le menu contextuel)

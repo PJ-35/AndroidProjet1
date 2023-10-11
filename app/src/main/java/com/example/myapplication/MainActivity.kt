@@ -15,10 +15,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class MainActivity : AppCompatActivity() {
-    companion object{
-        var administrateur=false
-
-    }
     private lateinit var viewModelMain: ViewModelMain
     private lateinit var binding: ActivityMainBinding
     /*private lateinit var floating:FloatingActionButton
