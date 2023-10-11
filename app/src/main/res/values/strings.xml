@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">Pierre_Wily</string>
     <string name="title_home">Magasin</string>
     <string name="title_panier">Panier</string>
     <string name="num_ro_photo">Numéro photo</string>
@@ -7,5 +7,6 @@
     <string name="description">Description</string>
     <string name="_0">0</string>
     <string name="prix">Prix :</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="action_edit">Éditer</string>
+    <string name="action_delete">Supprimer</string>
 </resources>

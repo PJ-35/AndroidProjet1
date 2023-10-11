@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
 import com.example.myapplication.data.categorie
 
-class VendeurAdapter(private val lstVendeur: List<Vendeur>):
+class VendeurAdapter(private val lstVendeur: List<Vendeur>,private val administrateur:Boolean):
     RecyclerView.Adapter<VendeurAdapter.ViewHolder>() {
 
 
@@ -17,7 +17,8 @@ class VendeurAdapter(private val lstVendeur: List<Vendeur>):
     // mis à disposition de toute activité instanciant l'adapter : à charge pour cette activité d'implémenter les méthodes de l'interface
     interface OnItemClickListenerInterface {
         fun onItemClick(itemView: View?, position: Int)
-
+        fun onClickEdit(itemView: View, position: Int)
+        fun onClickDelete(position: Int)
     }
 
     // Objet qui instancie l'interface OnItemClickListener
@@ -34,6 +35,37 @@ class VendeurAdapter(private val lstVendeur: List<Vendeur>):
         var tvPrix: TextView = itemView.findViewById(R.id.tv_prix)
         var imgPerson: ImageView = itemView.findViewById(R.id.img_person)
         var tvDescription: TextView = itemView.findViewById(R.id.tv_description)
+
+        // bloc de construction exécuté immédiatement après le constructeur primaire
+        // nécessaire car on ne peut pas exécuter de code dans le constructeur primaire
+        init {
+            if(administrateur){
+                // Ajoute un écouteur d'événement du clic long sur itemView
+                // (pour afficher le menu contextuel)
+                itemView.setOnCreateContextMenuListener { menu, v, menuInfo ->
+                    val position = adapterPosition
+                    // Crée les items du menu contextuel
+                    val edit: android.view.MenuItem = menu.add(0, v.id, 0, R.string.action_edit)
+                    val delete: android.view.MenuItem = menu.add(0, v.id, 0, R.string.action_delete)
+                    // Ajoute un écouteur d'événement sur les items du menu contextuel
+                    edit.setOnMenuItemClickListener {
+                        if (position != RecyclerView.NO_POSITION) {
+                            listener.onClickEdit(itemView, position)
+                        }
+                        false
+                    }
+                    delete.setOnMenuItemClickListener {
+                        if (position != RecyclerView.NO_POSITION) {
+                            listener.onClickDelete(position)
+                        }
+                        false
+                    }
+                }
+            }
+
+
+
+        }
     }
 
     // Cette méthode est appelée à chaque fois qu'il faut créer une ligne
@@ -41,7 +73,6 @@ class VendeurAdapter(private val lstVendeur: List<Vendeur>):
         // Utilise le layout person_one_line pour créer une vue
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.vendeur_rangee, parent, false)
-
         // Crée un viewHolder en passant la vue en paramètre
         return ViewHolder(view)
     }
