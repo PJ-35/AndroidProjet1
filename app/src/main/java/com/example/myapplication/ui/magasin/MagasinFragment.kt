@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.home
+package com.example.myapplication.ui.magasin
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,7 +15,7 @@ import com.example.myapplication.modele.Vendeur
 import com.example.myapplication.modele.VendeurAdapter
 import kotlin.concurrent.thread
 
-class HomeFragment : Fragment() {
+class MagasinFragment : Fragment() {
 
     private var _binding: FragmentMagasinBinding? = null
     private lateinit var adapter: VendeurAdapter
@@ -53,6 +53,8 @@ class HomeFragment : Fragment() {
 
         //Réglage d'affichage du recyclerView
         binding.rvPerson.layoutManager = LinearLayoutManager(requireContext())
+
+
         val root: View = binding.root
 
 
@@ -62,6 +64,7 @@ class HomeFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
 
 
 }

@@ -15,4 +15,5 @@ class ViewModelMain:ViewModel() {
     fun setVariableChanged(changed: Boolean) {
         _administrateur.value = changed
     }
+
 }

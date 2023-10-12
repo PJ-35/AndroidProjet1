@@ -4,19 +4,31 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.View
 import android.widget.Switch
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.example.myapplication.data.VendeurDao
+import com.example.myapplication.data.VendeurDatabase
+import com.example.myapplication.data.categorie
 import com.example.myapplication.databinding.ActivityMainBinding
+import com.example.myapplication.modele.Vendeur
+import com.example.myapplication.ui.magasin.CreerVendeur
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
+import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
     private lateinit var viewModelMain: ViewModelMain
     private lateinit var binding: ActivityMainBinding
+    private lateinit var floattingAdd:FloatingActionButton
+    private lateinit var vendeurDao: VendeurDao
+
     /*private lateinit var floating:FloatingActionButton
 */
     /*private lateinit var listVendeur: List<Vendeur>*/
@@ -27,7 +39,21 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         viewModelMain = ViewModelProvider(this)[ViewModelMain::class.java]
+        floattingAdd=findViewById(R.id.fab)
+        vendeurDao= VendeurDatabase.getInstance(this).vendeurDao()
+        floattingAdd.setOnClickListener { view ->
+            Snackbar.make(view, "Création d'un nouveau vendeur", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show()
 
+            // Configuration du fragment de dialogue pour modifier le nom
+            val dialog = CreerVendeur()
+            val args = Bundle()
+            dialog.arguments = args
+            // FragmentManager pour afficher le fragment de dialogue
+            val fm: FragmentManager = supportFragmentManager
+            dialog.show(fm, "fragment_magasin")
+
+        }
 
 
 
@@ -54,7 +80,6 @@ class MainActivity : AppCompatActivity() {
         val menuItem = menu.findItem(R.id.app_bar_switch)
         val switch = menuItem.actionView as Switch
         switch.text="Administrateur"
-        var floattingAdd=findViewById<FloatingActionButton>(R.id.fab)
         // Configurer l'écouteur de changement d'état du Switch
         switch.setOnCheckedChangeListener { _, isChecked ->
             // Faire quelque chose avec l'état activé/désactivé
@@ -71,4 +96,13 @@ class MainActivity : AppCompatActivity() {
 
         return true
     }
+
+    fun onCreateVendeur(nom: String,description:String,prix:Double,categorieDeBase:categorie){
+        Toast.makeText(this, "Vendeur créé avec succès", Toast.LENGTH_SHORT).show()
+        thread {
+            vendeurDao.insertVendeur(Vendeur(0,nom,description,prix, categorieDeBase,1))
+        }.join()
+
+    }
+
 }
