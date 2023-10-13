@@ -5,9 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.myapplication.MainActivity
 import com.example.myapplication.ViewModelMain
 import com.example.myapplication.data.VendeurDatabase
 import com.example.myapplication.databinding.FragmentMagasinBinding
@@ -42,18 +44,56 @@ class MagasinFragment : Fragment() {
 
         // fixe les dimensions du RecyclerView pour gain de performance
         binding.rvPerson.setHasFixedSize(true)
+
+
+        // Création de l'écouteur d'événement pour le RecyclerView
+        // (voir la classe PersonAdapter) interface OnItemClickListenerInterface
+        val onItemClickListener: VendeurAdapter.OnItemClickListenerInterface =
+            object : VendeurAdapter.OnItemClickListenerInterface {
+                override fun onItemClick(itemView: View?, position: Int) {
+
+                }
+
+                // Méthode appelée lors du clic sur le bouton Éditer
+                override fun onClickEdit(itemView: View, position: Int) {
+                    // Configuration du fragment de dialogue pour modifier le nom
+                    val dialog = CreerVendeur()
+                    val args = Bundle()
+                    var vendeur=liveDataVendeur.value!![position]
+                    args.putString("nom", vendeur.nom)
+                    args.putInt("id", vendeur.id)
+                    args.putString("description", vendeur.description)
+                    args.putString("categorie", vendeur.categorie.etat)
+                    args.putDouble("prix", vendeur.prix)
+                    dialog.arguments = args
+                    // FragmentManager pour afficher le fragment de dialogue
+                    val fm: FragmentManager =  MainActivity.fm
+                    dialog.show(fm, "fragment_edit_name")
+                }
+
+                // Méthode appelée lors du clic sur le bouton Supprimer
+                override fun onClickDelete(position: Int) {
+                    var tt=liveDataVendeur.value!![position]
+                    vendeurDao.deleteVendeur(tt)
+                    // Mettre à jour l'affichage du RecyclerView (adapter)
+                   // adapter.notifyItemRemoved(position)
+                }
+            }
+
         // Création de l'adapter avec une liste live data
         viewModelMain.administrateur.observe(requireActivity()){ administrateur->
             liveDataVendeur.observe(requireActivity()) {vendeur->
                 adapter = VendeurAdapter(vendeur,administrateur)
+                // Lier l'écouteur d'événement au RecyclerView
+                adapter.setOnItemClickListener(onItemClickListener)
                 binding.rvPerson.adapter = adapter
+
             }
         }
 
 
         //Réglage d'affichage du recyclerView
         binding.rvPerson.layoutManager = LinearLayoutManager(requireContext())
-
 
         val root: View = binding.root
 

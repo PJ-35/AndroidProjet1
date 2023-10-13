@@ -24,6 +24,9 @@ import com.google.android.material.snackbar.Snackbar
 import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
+    companion object{
+        lateinit var fm:FragmentManager
+    }
     private lateinit var viewModelMain: ViewModelMain
     private lateinit var binding: ActivityMainBinding
     private lateinit var floattingAdd:FloatingActionButton
@@ -41,6 +44,7 @@ class MainActivity : AppCompatActivity() {
         viewModelMain = ViewModelProvider(this)[ViewModelMain::class.java]
         floattingAdd=findViewById(R.id.fab)
         vendeurDao= VendeurDatabase.getInstance(this).vendeurDao()
+        fm= supportFragmentManager
         floattingAdd.setOnClickListener { view ->
             Snackbar.make(view, "Création d'un nouveau vendeur", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
@@ -50,7 +54,7 @@ class MainActivity : AppCompatActivity() {
             val args = Bundle()
             dialog.arguments = args
             // FragmentManager pour afficher le fragment de dialogue
-            val fm: FragmentManager = supportFragmentManager
+            //val fm: FragmentManager = supportFragmentManager
             dialog.show(fm, "fragment_magasin")
 
         }
@@ -101,6 +105,14 @@ class MainActivity : AppCompatActivity() {
         Toast.makeText(this, "Vendeur créé avec succès", Toast.LENGTH_SHORT).show()
         thread {
             vendeurDao.insertVendeur(Vendeur(0,nom,description,prix, categorieDeBase,1))
+        }.join()
+
+    }
+
+    fun onUpdateVendeur(vendeur: Vendeur){
+        Toast.makeText(this, "Le vendeur ${vendeur.nom} a bien été modifié", Toast.LENGTH_SHORT).show()
+        thread {
+            vendeurDao.updateVendeur(vendeur)
         }.join()
 
     }
