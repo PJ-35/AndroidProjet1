@@ -23,7 +23,7 @@ data class Vendeur(
     val categorie: categorie,
 
     @ColumnInfo("quantite")
-    val quantite: Int,
+    var quantite: Int,
 )
 
 

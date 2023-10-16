@@ -13,8 +13,8 @@
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.example.myapplication.ui.panier.DashboardFragment"
+        android:name="com.example.myapplication.ui.panier.PanierFragment"
         android:label="@string/title_panier"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_panier" />
 
 </navigation>
