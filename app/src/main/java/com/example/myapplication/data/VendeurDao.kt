@@ -53,4 +53,8 @@ interface VendeurDao {
     @Query("DELETE FROM vendeurs")
     fun deleteAllVendeurs()
 
+
+    @Query("SELECT * FROM vendeurs WHERE id IN (:listId)")
+    fun getListVendeurInId(listId: List<Int>): LiveData<List<Vendeur>>
+
 }

@@ -53,38 +53,44 @@ class MagasinFragment : Fragment() {
         val onItemClickListener: VendeurAdapter.OnItemClickListenerInterface =
             object : VendeurAdapter.OnItemClickListenerInterface {
                 override fun onItemClick(itemView: View?, position: Int) {
-                    var vendeur=liveDataVendeur.value!![position]
+                    var articleChoisie=liveDataVendeur.value!![position]
+
+                    viewModelMain.addVendeur(articleChoisie)
 
                     // Vérifiez si le vendeur existe déjà dans la liste d'articles
-                    val articles = viewModelMain.articles.value.orEmpty() // Obtenez la liste actuelle d'articles
-                    val vendeurExiste = articles.any { it.id == vendeur.id } // Remplacez "it.id" par le champ d'identification de votre modèle
+                   // val articles = vendeurDao.getListVendeurInId(viewModelMain.getArticlesDuPanier()) // Obtenez la liste actuelle d'articles
+
+
+
+                   // val vendeurExiste = articles.any { it.id == vendeur.id } // Remplacez "it.id" par le champ d'identification de votre modèle
 
                     when {
-                        articles.any { it.id == vendeur.id } -> {
-                            // Le vendeur existe déjà dans la liste des articles, augmenter la quantité
-                            val vendeurExistant = articles.find { it.id == vendeur.id }
-                            vendeurExistant?.quantite = (vendeurExistant?.quantite ?: 1) + 1
-
-                            if (itemView != null) {
-                                Snackbar.make(itemView, "La quantité du vendeur a été augmentée", Snackbar.LENGTH_LONG)
-                                    .setAction("Action", null)
-                                    .show()
-                            }
+//                        articles.any { it.id == vendeur.id } -> {
+//                            // Le vendeur existe déjà dans la liste des articles, augmenter la quantité
+//                            val vendeurExistant = articles.find { it.id == vendeur.id }
+//                            vendeurExistant?.quantite = (vendeurExistant?.quantite ?: 1) + 1
+//
 //                            if (itemView != null) {
-//                                Snackbar.make(itemView, "Le vendeur est déjà dans le panier", Snackbar.LENGTH_LONG)
+//                                Snackbar.make(itemView, "La quantité du vendeur a été augmentée", Snackbar.LENGTH_LONG)
 //                                    .setAction("Action", null)
 //                                    .show()
 //                            }
-                        }
-                        else -> {
+////                            if (itemView != null) {
+////                                Snackbar.make(itemView, "Le vendeur est déjà dans le panier", Snackbar.LENGTH_LONG)
+////                                    .setAction("Action", null)
+////                                    .show()
+////                            }
+//                        }
+//
+//                        else -> {
                             // Le vendeur n'existe pas encore dans la liste des articles, vous pouvez l'ajouter
-                            viewModelMain.addVendeur(vendeur)
+                           // viewModelMain.addVendeur(articleChoisie)
 //                            if (itemView != null) {
 //                                Snackbar.make(itemView, "Ajouté avec succès dans le panier", Snackbar.LENGTH_LONG)
 //                                    .setAction("Action", null)
 //                                    .show()
 //                            }
-                        }
+  //                      }
                     }
 
 
