@@ -17,6 +17,8 @@ import com.example.myapplication.databinding.FragmentMagasinBinding
 import com.example.myapplication.modele.Vendeur
 import com.example.myapplication.modele.VendeurAdapter
 import com.example.myapplication.ui.panier.PanierViewModel
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
 import kotlin.concurrent.thread
 
 class MagasinFragment : Fragment() {
@@ -26,9 +28,8 @@ class MagasinFragment : Fragment() {
     private lateinit var viewModelMain: ViewModelMain
     private lateinit var panierViewModel: PanierViewModel
     private lateinit var liveDataVendeur: LiveData<List<Vendeur>>
-    private val vendeurs: List<Vendeur> = emptyList()
-    // This property is only valid between onCreateView and
-    // onDestroyView.
+    private lateinit var floattingAdd: FloatingActionButton
+
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -39,6 +40,7 @@ class MagasinFragment : Fragment() {
         _binding = FragmentMagasinBinding.inflate(inflater, container, false)
         viewModelMain = ViewModelProvider(requireActivity()).get(ViewModelMain::class.java)
         panierViewModel = ViewModelProvider(requireActivity()).get(PanierViewModel::class.java)
+        floattingAdd=binding.fab
 
 
         //creation de l'instance de base de données
@@ -92,8 +94,8 @@ class MagasinFragment : Fragment() {
             }
 
         // Création de l'adapter avec une liste live data
-        viewModelMain.administrateur.observe(requireActivity()){ administrateur->
-            liveDataVendeur.observe(requireActivity()) {vendeur->
+        viewModelMain!!.administrateur.observe(viewLifecycleOwner){ administrateur->
+            liveDataVendeur.observe(viewLifecycleOwner) {vendeur->
                 adapter = VendeurAdapter(vendeur,administrateur)
                 // Lier l'écouteur d'événement au RecyclerView
                 adapter.setOnItemClickListener(onItemClickListener)
@@ -108,7 +110,28 @@ class MagasinFragment : Fragment() {
 
         val root: View = binding.root
 
+        floattingAdd.setOnClickListener {
+            Snackbar.make(it, "Création d'un nouveau vendeur", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show()
 
+            // Configuration du fragment de dialogue pour modifier le nom
+            val dialog = CreerVendeur()
+            val args = Bundle()
+            dialog.arguments = args
+            // FragmentManager pour afficher le fragment de dialogue
+            //val fm: FragmentManager = supportFragmentManager
+            dialog.show(MainActivity.fm, "fragment_magasin")
+
+        }
+
+        viewModelMain.administrateur.observe(viewLifecycleOwner){ administrateur->
+            if(administrateur){
+                floattingAdd.visibility= View.VISIBLE
+            }
+            else{
+                floattingAdd.visibility=View.GONE
+            }
+        }
         return root
     }
     override fun onDestroyView() {
