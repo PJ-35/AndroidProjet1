@@ -16,7 +16,7 @@ import com.example.myapplication.data.VendeurDatabase
 import com.example.myapplication.databinding.FragmentMagasinBinding
 import com.example.myapplication.modele.Vendeur
 import com.example.myapplication.modele.VendeurAdapter
-import com.google.android.material.snackbar.Snackbar
+import com.example.myapplication.ui.panier.PanierViewModel
 import kotlin.concurrent.thread
 
 class MagasinFragment : Fragment() {
@@ -24,6 +24,7 @@ class MagasinFragment : Fragment() {
     private var _binding: FragmentMagasinBinding? = null
     private lateinit var adapter: VendeurAdapter
     private lateinit var viewModelMain: ViewModelMain
+    private lateinit var panierViewModel: PanierViewModel
     private lateinit var liveDataVendeur: LiveData<List<Vendeur>>
     private val vendeurs: List<Vendeur> = emptyList()
     // This property is only valid between onCreateView and
@@ -37,6 +38,8 @@ class MagasinFragment : Fragment() {
     ): View {
         _binding = FragmentMagasinBinding.inflate(inflater, container, false)
         viewModelMain = ViewModelProvider(requireActivity()).get(ViewModelMain::class.java)
+        panierViewModel = ViewModelProvider(requireActivity()).get(PanierViewModel::class.java)
+
 
         //creation de l'instance de base de données
         var vendeurDao= VendeurDatabase.getInstance(requireContext()).vendeurDao()
@@ -55,45 +58,7 @@ class MagasinFragment : Fragment() {
                 override fun onItemClick(itemView: View?, position: Int) {
                     var articleChoisie=liveDataVendeur.value!![position]
 
-                    viewModelMain.addVendeur(articleChoisie)
-
-                    // Vérifiez si le vendeur existe déjà dans la liste d'articles
-                   // val articles = vendeurDao.getListVendeurInId(viewModelMain.getArticlesDuPanier()) // Obtenez la liste actuelle d'articles
-
-
-
-                   // val vendeurExiste = articles.any { it.id == vendeur.id } // Remplacez "it.id" par le champ d'identification de votre modèle
-
-                    when {
-//                        articles.any { it.id == vendeur.id } -> {
-//                            // Le vendeur existe déjà dans la liste des articles, augmenter la quantité
-//                            val vendeurExistant = articles.find { it.id == vendeur.id }
-//                            vendeurExistant?.quantite = (vendeurExistant?.quantite ?: 1) + 1
-//
-//                            if (itemView != null) {
-//                                Snackbar.make(itemView, "La quantité du vendeur a été augmentée", Snackbar.LENGTH_LONG)
-//                                    .setAction("Action", null)
-//                                    .show()
-//                            }
-////                            if (itemView != null) {
-////                                Snackbar.make(itemView, "Le vendeur est déjà dans le panier", Snackbar.LENGTH_LONG)
-////                                    .setAction("Action", null)
-////                                    .show()
-////                            }
-//                        }
-//
-//                        else -> {
-                            // Le vendeur n'existe pas encore dans la liste des articles, vous pouvez l'ajouter
-                           // viewModelMain.addVendeur(articleChoisie)
-//                            if (itemView != null) {
-//                                Snackbar.make(itemView, "Ajouté avec succès dans le panier", Snackbar.LENGTH_LONG)
-//                                    .setAction("Action", null)
-//                                    .show()
-//                            }
-  //                      }
-                    }
-
-
+                    panierViewModel.addVendeur(articleChoisie)
                 }
 
                 // Méthode appelée lors du clic sur le bouton Éditer

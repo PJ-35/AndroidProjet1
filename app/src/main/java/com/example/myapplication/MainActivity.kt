@@ -59,7 +59,14 @@ class MainActivity : AppCompatActivity() {
 
         }
 
-
+        viewModelMain.administrateur.observe(this){ administrateur->
+                if(administrateur){
+                    floattingAdd.visibility= View.VISIBLE
+                }
+            else{
+                    floattingAdd.visibility=View.GONE
+            }
+        }
 
 
 
@@ -90,11 +97,9 @@ class MainActivity : AppCompatActivity() {
             if (isChecked) {
                 // Switch activé
                 viewModelMain.setVariableChanged(true)
-                floattingAdd.visibility= View.VISIBLE
             }else {
                 // Switch désactivé
                 viewModelMain.setVariableChanged(false)
-                floattingAdd.visibility=View.GONE
             }
         }
 
